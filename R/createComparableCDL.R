@@ -1,4 +1,4 @@
-#'Create comparable raster images.
+#'Create comparable raster images
 #'
 #'\code{createComparableCDL} uses a base index within a raster list, and sets all other
 #' raster images within the list to the same resolution, projection, and extent.  The 
@@ -12,11 +12,11 @@
 #'  match with respect to resolution, projection and extent.
 #' @param progress A string for the raster progress bar type, default "" is none, 
 #'  "text" provides text output, "window" provides a gui window if available.
-#' @return A list of raster images matching in extent, resolution and projection. 
+#' @return A list of raster images matching in extent, resolution, and projection. 
 #' @examples
 #' \dontrun{
 #' # download multiple years of Iowa Data
-#' r <- getCDL('rhode island',c(2006,2010))
+#' r <- getCDL('iowa',c(2006,2010))
 #' # resample based on the 2006
 #' r2 <- createComparableCDL(r,baseIndex=1)
 #' }
