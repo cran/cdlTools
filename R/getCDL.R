@@ -6,7 +6,7 @@
 #'  a state name.
 #'@param year A numerical vector. A set of years of CDL data to download.
 #'@param alternativeUrl An optional string containing an alternative url.
-#'@param location An optional string containing a location to store the file.
+#'@param location An optional string containing a folder to store the file.
 #'@param https An optional boolean to turn on and off https, default is on.
 #'@param ssl.verifypeer An optional boolean to turn on and off ssl verfication, default is on.
 #'@return A list of CDL raster objects of interested county for a set of years.
@@ -39,7 +39,14 @@ getCDL <- function(x,year,alternativeUrl,location,https=TRUE, ssl.verifypeer = T
     if( is.na(x[i]) ) next 
 
     for(year in years){
-      if(missing(location)) location <- tempdir()
+      out_target <- paste(location, 
+                          sprintf("CDL_%d_%02d.tif", 
+                                  year, x[i]), sep = "/")
+      if(file.exists(out_target)){
+        target   <- raster::raster(out_target)
+        cdl.list <- append(cdl.list, target) 
+        next
+      }
       # create cropscape URL 
       if(missing(alternativeUrl)) {
           if(https) {
@@ -63,7 +70,7 @@ getCDL <- function(x,year,alternativeUrl,location,https=TRUE, ssl.verifypeer = T
           httr::write_disk(paste(
             location, sprintf("CDL_%d_%02d.zip", year, x[i]), sep = "/"), 
           overwrite = TRUE), 
-          config = httr::config(ssl_verifypeer = ssl.verifypeer))
+          config = httr::config(ssl_verifypeer = ssl.verifypeer), httr::progress())
         
         utils::unzip(paste(
           location, sprintf("CDL_%d_%02d.zip", year, x[i]), sep="/"), 
