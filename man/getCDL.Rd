@@ -4,8 +4,15 @@
 \alias{getCDL}
 \title{Get CDL raster data}
 \usage{
-getCDL(x, year, alternativeUrl, location, https = TRUE,
-  ssl.verifypeer = TRUE)
+getCDL(
+  x,
+  year,
+  alternativeUrl,
+  location = tempdir(),
+  https = TRUE,
+  ssl.verifypeer = TRUE,
+  returnType = "raster"
+)
 }
 \arguments{
 \item{x}{Is either a two digit state FIPS code, a two letter abbreviation, or
@@ -15,14 +22,16 @@ a state name.}
 
 \item{alternativeUrl}{An optional string containing an alternative url.}
 
-\item{location}{An optional string containing a location to store the file.}
+\item{location}{An optional string containing a folder to store the file.  If no folder is given, the R temporary directory will be used.}
 
-\item{https}{An optional boolean to turn on and off https, default is on.}
+\item{https}{Legacy https flag, all traffic uses https, if you need http provide alternative url.}
 
 \item{ssl.verifypeer}{An optional boolean to turn on and off ssl verfication, default is on.}
+
+\item{returnType}{An optional parameter to select to return either 'raster' or 'terra' based raster files.}
 }
 \value{
-A list of CDL raster objects of interested county for a set of years.
+A list of CDL raster objects of interested county for a set of years.  Note that this is a generic list allowing for rasters with different extents and resolutions.
 }
 \description{
 \code{getCDL} retrieves CDL state raster objects for a set of years.
@@ -32,8 +41,8 @@ A list of CDL raster objects of interested county for a set of years.
 # Get data for California, 2013 and 2015
 # by FIPS
 getCDL(6,c(2013,2015))
-# Get data for California, 2013 and 2015
-getCDL("California",c(2013,2015))
+# Get data for California, 2013 and 2015 with Terra
+getCDL("California",c(2013,2015), returnType='terra')
 # Get all the west coast from 2009 to 2016
 getCDL(c("CA","OR","WA"),2013:2016)
 }
@@ -41,5 +50,5 @@ getCDL(c("CA","OR","WA"),2013:2016)
 \author{
 Jonathan Lisic, \email{jlisic@gmail.com}
 
-Joseph Stachelek, \email{stachel2@msu.edu}
+Jemma Stachelek, \email{stachel2@msu.edu}
 }
